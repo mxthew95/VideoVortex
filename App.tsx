@@ -1,13 +1,16 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, FC } from 'react';
 import {
   View,
   Text
 } from 'react-native';
+
+const title: string = "Hello World!";
+
 const App = () => {
   
   return(
     <View>
-      <Text>Hello World</Text>
+      <Text>{title}</Text>
     </View>
   );
 };
