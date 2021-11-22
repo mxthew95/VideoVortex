@@ -1,18 +1,38 @@
-import React, { useEffect, useState, FC } from 'react';
-import {
-  View,
-  Text
-} from 'react-native';
+import React, { FC } from 'react'
+import { createStore } from 'redux'
+import { Provider } from 'react-redux'
+import VortexApp from './src/VortexApp'
 
-const title: string = "Hello World!";
+const [isSwitchEnabled, setIsSwitchEnabled] = useState(false);
+  const [dialogVisible, setDialogVisible] = useState(false);
+  const [dialogErrVisible, setDialogErrVisible] = useState(false);
+  const [selectedLogs, setSelectedLogs] = useState([]);
+  const [logs, setLogs] = useState([]);
+  const [result, setResult] = useState({ fwd: 0, rew: 0, money: 0 });
+  const [modeSettings, setModeSettings] = useState({
+    defaultMode: true,
+    carouselIndex: 20,
+    selectedModeIndex: 0,
+    validItems: _DEFAULT_ITEMS,
+  });
 
-const App = () => {
+const initialState = {
+  
+}
+
+const reducer = (state = initialState) => {
+  return state;
+}
+
+const store = createStore(reducer)
+
+const App: FC = () => {
   
   return(
-    <View>
-      <Text>{title}</Text>
-    </View>
-  );
-};
+    <Provider store={store}>
+      <VortexApp/>
+    </Provider>
+  )
+}
 
 export default App;
