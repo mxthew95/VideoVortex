@@ -6,11 +6,12 @@ import {
     TouchableOpacity,
     Image
 } from 'react-native'
+import { connect } from 'react-redux'
 
-const SelectedLogs: FC = () => {
+const SelectedLogs: FC = (props:any) => {
     return (
         <View style={styles.container}>
-            <Text style={styles.selectedLogText}>{/*selected logs array length*/} selected</Text>
+            <Text style={styles.selectedLogText}>{props.selectedLogs.length} selected</Text>
             <View>
                 <Text style={styles.selectedLogText}>FWD: </Text>
                 <Text style={styles.selectedLogText}>REW: </Text>
@@ -18,7 +19,7 @@ const SelectedLogs: FC = () => {
                 <Text style={styles.selectedLogText}>$: </Text>
             </View>
             <TouchableOpacity
-
+                onPress={props.setSelectedLogs}
             >
                 <View style={styles.deleteButton}>
                     <Image style={styles.deleteIcon} source={require('../trash.png')} />
@@ -41,6 +42,7 @@ const styles = StyleSheet.create({
         fontSize: 16,
         fontWeight: 'bold',
         fontFamily: "JosefinSans-Regular",
+        color: 'black'
     },
     deleteButton: {
         height: 40,
@@ -50,4 +52,18 @@ const styles = StyleSheet.create({
     deleteIcon: { width: 40, height: 40 }
 })
 
-export default SelectedLogs;
+const mapStateToProps = state => ({
+    selectedLogs: state.selectedLogs
+})
+
+const mapDispatchToProps = dispatch => {
+    let selectedLogs = []
+
+    return {
+        setSelectedLogs: () => dispatch({type:'SET_SELECTED_LOGS', selectedLogs})
+    }
+}
+
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(SelectedLogs)

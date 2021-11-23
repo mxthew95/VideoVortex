@@ -5,7 +5,14 @@ interface Log {
     value: number
 }
 
-const initialState: Log[] = [];
+let test = {
+    id: '1',
+    time: 1,
+    type: 'forward',
+    value: 1
+}
+
+const initialState: Log[] = [test];
 
 const selectedLogs = (state: Log[] = initialState, action: any): Log[] => {
     switch (action.type) {

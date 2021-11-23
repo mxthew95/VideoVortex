@@ -2,20 +2,15 @@ import React, { FC } from 'react'
 import {
   StyleSheet,
   ImageBackground,
-  View,Text
 } from 'react-native'
+import selectedLogs from '../src/reducers/selectedLogs'
 
 import SelectedLogs from './SelectedLogs'
 
-import { connect } from 'react-redux'
-
-interface Props {
-  items: number[]
-}
-
-const VortexAppBody: FC<Props> = (props: Props) => {
+const VortexAppBody: FC = () => {
   return (
     <ImageBackground source={require('../layout.jpg')} style={styles.imgBackground} resizeMode="cover">
+      <SelectedLogs />
     </ImageBackground>
   )
 }

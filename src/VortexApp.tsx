@@ -12,7 +12,7 @@ const VortexApp: FC = () => {
     return (
         <View style={styles.container}>
             <VortexAppHeader />
-            <VortexAppBody items={undefined} />
+            <VortexAppBody />
         </View>
     )
 }
