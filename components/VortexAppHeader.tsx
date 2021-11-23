@@ -12,9 +12,6 @@ const VortexAppHeader: FC = () => {
         <Header
             barStyle="dark-content"
             backgroundColor= {theme}
-            containerStyle={{
-                backgroundColor: theme,
-            }}
             placement="left"
             centerContainerStyle={styles.centerContainer}
             centerComponent={<Text style={styles.titleText}>Video Vortex Tracker</Text>}
@@ -25,7 +22,7 @@ const VortexAppHeader: FC = () => {
 }
 
 const styles = StyleSheet.create({
-    titleText: { fontSize: 20, fontWeight: 'bold', fontFamily: 'monospace' },
+    titleText: { fontSize: 20, fontWeight: 'bold', fontFamily: 'monospace', color:'black'},
     centerContainer: { justifyContent: 'center' }
 })
 
