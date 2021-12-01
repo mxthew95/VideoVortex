@@ -6,11 +6,10 @@ import {
 } from 'react-native'
 import BouncyCheckbox from "react-native-bouncy-checkbox";
 import { connect } from 'react-redux';
-import { LogInterface } from '../src/types';
+import { LogInterface, LogProps } from '../src/types';
 
-const Log: FC = (props: any) => {
+const Log: FC<LogProps> = ({item, selectedLogs, setSelectedLogs, logs, result}) => {
     const [logText, setLogText] = useState('')
-    const { item, selectedLogs, result, logs, setSelectedLogs } = props;
 
     useEffect(() => {
         switch (item.type) {

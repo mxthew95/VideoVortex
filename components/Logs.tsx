@@ -12,7 +12,7 @@ const screen = Dimensions.get("screen");
 
 const Logs: FC<LogsProps> = ({logs, selectedLogs}) => {
     const renderLogItem = ({item}) => {
-        return <Log {...item}/>
+        return <Log item = {item}/>
     }
     
     return (

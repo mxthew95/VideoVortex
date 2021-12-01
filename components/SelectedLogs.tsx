@@ -7,9 +7,9 @@ import {
     Image
 } from 'react-native'
 import { connect } from 'react-redux'
+import { SelectedLogsProps } from '../src/types'
 
-const SelectedLogs: FC = (props: any) => {
-    const { selectedLogs, setSelectedLogs, result } = props;
+const SelectedLogs: FC<SelectedLogsProps> = ({selectedLogs, setSelectedLogs}) => {
     const [totalFWD, setTotalFWD] = useState(0)
     const [totalREW, setTotalREW] = useState(0)
     const [totalTS, setTotalTS] = useState(0)
@@ -36,7 +36,7 @@ const SelectedLogs: FC = (props: any) => {
                 <Text style={styles.selectedLogText}>$: {totalMONEY}</Text>
             </View>
             <TouchableOpacity
-                onPress={setSelectedLogs}
+                onPress={()=>{setSelectedLogs()}}
             >
                 <View style={styles.deleteButton}>
                     <Image style={styles.deleteIcon} source={require('../trash.png')} />
@@ -71,12 +71,10 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = state => ({
     selectedLogs: state.selectedLogs,
-    result: state.result
 })
 
 const mapDispatchToProps = dispatch => {
     let selectedLogs = []
-
     return {
         setSelectedLogs: () => dispatch({ type: 'SET_SELECTED_LOGS', selectedLogs })
     }
