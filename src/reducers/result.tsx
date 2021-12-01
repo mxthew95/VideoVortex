@@ -1,16 +1,12 @@
-interface Result {
-    money: number,
-    fwd: number,
-    rew: number
-}
+import { ResultInterFace } from "../types"
 
-const initialState: Result = {
+const initialState: ResultInterFace = {
     money: 0,
     fwd: 0,
     rew: 0,
 }
 
-const result = (state: Result = initialState, action: any): Result => {
+const result = (state: ResultInterFace = initialState, action: any): ResultInterFace => {
     switch (action.type) {
         case 'SET_RESULT':
             return action.result

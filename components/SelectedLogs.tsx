@@ -1,4 +1,4 @@
-import React, { FC } from 'react'
+import React, { FC, useEffect, useState } from 'react'
 import {
     StyleSheet,
     View,
@@ -8,18 +8,35 @@ import {
 } from 'react-native'
 import { connect } from 'react-redux'
 
-const SelectedLogs: FC = (props:any) => {
+const SelectedLogs: FC = (props: any) => {
+    const { selectedLogs, setSelectedLogs, result } = props;
+    const [totalFWD, setTotalFWD] = useState(0)
+    const [totalREW, setTotalREW] = useState(0)
+    const [totalTS, setTotalTS] = useState(0)
+    const [totalMONEY, setTotalMONEY] = useState(0)
+
+    useEffect(()=>{
+        setTotalSelectedLogResult();
+    })
+
+    const setTotalSelectedLogResult = () => {
+        setTotalFWD(selectedLogs.filter(el => el.type === 'forward').reduce((a, c) => c.value + a, 0));
+        setTotalREW(selectedLogs.filter(el => el.type === 'rewind').reduce((a, c) => Math.abs(c.value) + a, 0));
+        setTotalTS(selectedLogs.filter(el => el.type === 'timeshift').reduce((a, c) => c.value + a, 0));
+        setTotalMONEY(selectedLogs.filter(el => el.type === 'money+' || el.type === 'money-').reduce((a, c) => c.value + a, 0));
+    }
+
     return (
         <View style={styles.container}>
-            <Text style={styles.selectedLogText}>{props.selectedLogs.length} selected</Text>
+            <Text style={styles.selectedLogText}>{selectedLogs.length} selected</Text>
             <View>
-                <Text style={styles.selectedLogText}>FWD: </Text>
-                <Text style={styles.selectedLogText}>REW: </Text>
-                <Text style={styles.selectedLogText}>TS: </Text>
-                <Text style={styles.selectedLogText}>$: </Text>
+                <Text style={styles.selectedLogText}>FWD: {totalFWD}</Text>
+                <Text style={styles.selectedLogText}>REW: {totalREW}</Text>
+                <Text style={styles.selectedLogText}>TS: {totalTS}</Text>
+                <Text style={styles.selectedLogText}>$: {totalMONEY}</Text>
             </View>
             <TouchableOpacity
-                onPress={props.setSelectedLogs}
+                onPress={setSelectedLogs}
             >
                 <View style={styles.deleteButton}>
                     <Image style={styles.deleteIcon} source={require('../trash.png')} />
@@ -53,17 +70,16 @@ const styles = StyleSheet.create({
 })
 
 const mapStateToProps = state => ({
-    selectedLogs: state.selectedLogs
+    selectedLogs: state.selectedLogs,
+    result: state.result
 })
 
 const mapDispatchToProps = dispatch => {
     let selectedLogs = []
 
     return {
-        setSelectedLogs: () => dispatch({type:'SET_SELECTED_LOGS', selectedLogs})
+        setSelectedLogs: () => dispatch({ type: 'SET_SELECTED_LOGS', selectedLogs })
     }
 }
-
-
 
 export default connect(mapStateToProps, mapDispatchToProps)(SelectedLogs)

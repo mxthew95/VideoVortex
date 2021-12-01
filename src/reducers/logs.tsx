@@ -1,13 +1,13 @@
-interface Log {
+interface LogInterface {
     id: string,
     time: number
     type: string,
     value: number
 }
 
-const initialState: Log[] = [];
+const initialState: LogInterface[] = [];
 
-const logs = (state: Log[] = initialState, action: any): Log[] => {
+const logs = (state: LogInterface[] = initialState, action: any): LogInterface[] => {
     switch (action.type) {
         case 'SET_LOGS':
             return action.logs

@@ -3,14 +3,15 @@ import {
   StyleSheet,
   ImageBackground,
 } from 'react-native'
-import selectedLogs from '../src/reducers/selectedLogs'
 
 import SelectedLogs from './SelectedLogs'
+import Logs from './Logs'
 
 const VortexAppBody: FC = () => {
   return (
     <ImageBackground source={require('../layout.jpg')} style={styles.imgBackground} resizeMode="cover">
       <SelectedLogs />
+      <Logs />
     </ImageBackground>
   )
 }
