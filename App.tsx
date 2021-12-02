@@ -1,5 +1,5 @@
 import React, { FC } from 'react'
-import VortexApp from './src/VortexApp'
+import VortexApp from './components/VortexApp'
 import store from './src/store'
 import { Provider } from 'react-redux'
 

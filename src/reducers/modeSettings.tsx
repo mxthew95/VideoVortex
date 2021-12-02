@@ -1,7 +1,4 @@
-const _DEFAULT_ITEMS: number[] = [];
-for (let i = -20; i <= 20; i++) {
-  _DEFAULT_ITEMS.push(i);
-}
+import {_DEFAULT_ITEMS} from '../default';
 
 interface Mode {
   defaultMode: boolean,

@@ -35,3 +35,19 @@ export interface SelectedLogsProps {
     selectedLogs: LogInterface[],
     setSelectedLogs: Function
 }
+
+export interface ResultProp {
+    fwd: number,
+    rew: number,
+    money: number,
+}
+
+export interface ActionsSheetProp {
+    result: ResultInterFace,
+    modeSettings: ModeInterface,
+    logs: LogInterface[],
+    selectedLogs: LogInterface[],
+    setResult: Function, 
+    setModeSettings: Function,
+    setLogs: Function
+}

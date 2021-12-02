@@ -26,24 +26,28 @@ const SelectedLogs: FC<SelectedLogsProps> = ({selectedLogs, setSelectedLogs}) =>
         setTotalMONEY(selectedLogs.filter(el => el.type === 'money+' || el.type === 'money-').reduce((a, c) => c.value + a, 0));
     }
 
-    return (
-        <View style={styles.container}>
-            <Text style={styles.selectedLogText}>{selectedLogs.length} selected</Text>
-            <View>
-                <Text style={styles.selectedLogText}>FWD: {totalFWD}</Text>
-                <Text style={styles.selectedLogText}>REW: {totalREW}</Text>
-                <Text style={styles.selectedLogText}>TS: {totalTS}</Text>
-                <Text style={styles.selectedLogText}>$: {totalMONEY}</Text>
-            </View>
-            <TouchableOpacity
-                onPress={()=>{setSelectedLogs()}}
-            >
-                <View style={styles.deleteButton}>
-                    <Image style={styles.deleteIcon} source={require('../trash.png')} />
+    if(selectedLogs.length > 0){
+        return (
+            <View style={styles.container}>
+                <Text style={styles.selectedLogText}>{selectedLogs.length} selected</Text>
+                <View>
+                    <Text style={styles.selectedLogText}>FWD: {totalFWD}</Text>
+                    <Text style={styles.selectedLogText}>REW: {totalREW}</Text>
+                    <Text style={styles.selectedLogText}>TS: {totalTS}</Text>
+                    <Text style={styles.selectedLogText}>$: {totalMONEY}</Text>
                 </View>
-            </TouchableOpacity>
-        </View>
-    )
+                <TouchableOpacity
+                    onPress={()=>{setSelectedLogs()}}
+                >
+                    <View style={styles.deleteButton}>
+                        <Image style={styles.deleteIcon} source={require('../trash.png')} />
+                    </View>
+                </TouchableOpacity>
+            </View>
+        )
+    }
+
+    return (<></>);
 }
 
 const styles = StyleSheet.create({

@@ -1,13 +1,12 @@
 import React, { FC } from 'react'
 import {
     StyleSheet,
-    View,
-    Text
+    View
 } from 'react-native'
 
 const Card: FC = (props) => {
     return (
-        <View style={{ ...styles.card, ...props.style }}>{props.children}</View>
+        <View style={styles.card}>{props.children}</View>
     );
 }
 

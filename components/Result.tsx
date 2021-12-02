@@ -5,8 +5,9 @@ import {
     Text
 } from 'react-native'
 import Card from './Card';
+import { ResultProp } from '../src/types';
 
-const Result: FC = (props) => {
+const Result: FC<ResultProp> = (props) => {
     const { fwd, rew, money } = props;
 
     return (
@@ -14,8 +15,8 @@ const Result: FC = (props) => {
             <Card>
                 <View style={styles.runtime}>
                     <Text style={styles.category}>RUNTIME</Text>
-                    <Text>FWD {fwd}</Text>
-                    <Text>REW {rew}</Text>
+                    <Text style={styles.runtimeText}>FWD {fwd}</Text>
+                    <Text style={styles.runtimeText}>REW {rew}</Text>
                 </View>
             </Card>
             <Card>
@@ -36,14 +37,15 @@ const styles = StyleSheet.create({
     },
     runtime: {
         alignItems: 'center',
-        width: 120
+        width: 120,
     },
-    category: { fontWeight: 'bold', fontSize: 18, fontFamily: 'monospace' },
+    category: { color:'black', fontWeight: 'bold', fontSize: 18, fontFamily: 'monospace' },
     money: {
         alignItems: 'center',
         width: 100,
     },
-    moneyText: { fontSize: 20 }
+    runtimeText: { color:'black' },
+    moneyText: { color:'black', fontSize: 20 }
 })
 
 export default Result;
