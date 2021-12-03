@@ -11,7 +11,7 @@ import { LogsProps } from '../src/types';
 const screen = Dimensions.get("screen");
 
 const Logs: FC<LogsProps> = ({logs, selectedLogs}) => {
-    const renderLogItem = ({item}) => {
+    const renderLogItem = ({item}): JSX.Element => {
         return <Log item = {item}/>
     }
     

@@ -1,27 +1,27 @@
 import React, { FC } from 'react';
 import {
-    View,
-    StyleSheet,
+    Dimensions,
+    ImageBackground,
+    StyleSheet
 } from 'react-native'
 import VortexAppHeader from '../components/VortexAppHeader';
 import VortexAppBody from '../components/VortexAppBody';
-
-const theme: string = '#ffffff'
+import ActionsSheet from './ActionsSheet'
+const theme: string = '#ffffff';
+const screen = Dimensions.get('screen');
 
 const VortexApp: FC = () => {
     return (
-        <View style={styles.container}>
+        <ImageBackground style={styles.imgBackground} source={require('../layout.jpg')}>
             <VortexAppHeader />
             <VortexAppBody />
-        </View>
+            <ActionsSheet />
+        </ImageBackground>
     )
-}
+};
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: theme,
-      },
-})
+    imgBackground: {height: screen.height, width: screen.width}
+});
 
 export default VortexApp;

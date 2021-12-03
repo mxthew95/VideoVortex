@@ -2,14 +2,15 @@ import React, { FC, useEffect, useState } from 'react'
 import {
     StyleSheet,
     View,
-    Text
+    Alert
 } from 'react-native'
 import BouncyCheckbox from "react-native-bouncy-checkbox";
 import { connect } from 'react-redux';
 import { LogInterface, LogProps } from '../src/types';
 
-const Log: FC<LogProps> = ({item, selectedLogs, setSelectedLogs, logs, result}) => {
+const Log: FC<LogProps> = ({ item, selectedLogs, setSelectedLogs, logs, result }) => {
     const [logText, setLogText] = useState('')
+    const [isChecked, setIsChecked] = useState(false)
 
     useEffect(() => {
         switch (item.type) {
@@ -31,15 +32,28 @@ const Log: FC<LogProps> = ({item, selectedLogs, setSelectedLogs, logs, result}) 
         }
     })
 
-    const handleCheck = (checked: boolean, id:string) => {
+    const handleCheck = (id: string): void => {
+        if (item.type === 'money+' && item.value > result.money) {
+            Alert.alert(
+                "",
+                `You can't remove this log because your money is less than ${item.value} `,
+                [
+                    { text: "OK" }
+                ]
+            );
+            return;
+        }
+
         const log: LogInterface = logs.find(log => log.id === id);
-        if (checked) {
+        if (!isChecked) {
             setSelectedLogs([...selectedLogs, log]);
         }
         else {
             const filteredLogs: LogInterface[] = selectedLogs.filter(log => log.id !== id);
             setSelectedLogs(filteredLogs);
         }
+
+        setIsChecked(!isChecked);
     };
 
     return (
@@ -47,14 +61,16 @@ const Log: FC<LogProps> = ({item, selectedLogs, setSelectedLogs, logs, result}) 
             <BouncyCheckbox
                 size={25}
                 fillColor="#0020f0"
-                unfillColor={item.value > result.money ? "#dbdbdb" : "#FFFFFF"}
+                unfillColor={isChecked ? "#dbdbdb" : "#FFFFFF"}
                 textStyle={{
                     ...styles.text,
-                    color: item.value > result.money ? '#adadad' : '#000000'
+                    color: item.type === 'money+' && item.value > result.money ? '#adadad' : '#000000'
                 }}
                 text={logText}
-                onPress={(isChecked) => { handleCheck(isChecked, item.id) }}
+                onPress={() => { handleCheck(item.id) }}
                 bounceEffect={1}
+                isChecked={isChecked}
+                disableBuiltInState
             />
         </View>
     )
@@ -85,7 +101,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => {
     return {
-        setSelectedLogs: selectedLogs => dispatch({type:'SET_SELECTED_LOGS', selectedLogs})
+        setSelectedLogs: (selectedLogs: LogInterface): void => dispatch({ type: 'SET_SELECTED_LOGS', selectedLogs })
     }
 }
 
