@@ -33,7 +33,17 @@ export interface LogsProps {
 
 export interface SelectedLogsProps {
     selectedLogs: LogInterface[],
-    setSelectedLogs: Function
+    result: ResultInterFace,
+    logs: LogInterface[],
+    modeSettings: ModeInterface,
+    carousel: any,
+    isSwitchEnabled: boolean,
+    setSelectedLogs: Function,
+    setResult: Function,
+    setLogs: Function,
+    setModeSettings: Function
+    setCarousel: Function,
+    setIsSwitchEnabled: Function
 }
 
 export interface ResultProp {
@@ -47,7 +57,21 @@ export interface ActionsSheetProp {
     modeSettings: ModeInterface,
     logs: LogInterface[],
     selectedLogs: LogInterface[],
+    carousel: any,
+    isSwitchEnabled: boolean,
     setResult: Function, 
     setModeSettings: Function,
-    setLogs: Function
+    setLogs: Function,
+    setCarousel: Function,
+    setIsSwitchEnabled: Function
+}
+
+export interface ResetButtonProp {
+    carousel: any,
+    setResult: Function, 
+    setSelectedLogs: Function,
+    setModeSettings: Function,
+    setLogs: Function,
+    setCarousel: Function,
+    setIsSwitchEnabled: Function
 }

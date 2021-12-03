@@ -1,4 +1,4 @@
-import { ModeInterface, LogInterface, ResultInterFace } from '../types'
+import { ModeInterface, LogInterface, ResultInterFace } from '../types';
 
 export const setModeSettings = (modeSettings: ModeInterface[]) => ({
     type: 'SET_MODE_SETTINGS',
@@ -18,4 +18,14 @@ export const setSelectedLogs = (selectedLogs: LogInterface[]) => ({
 export const setResult = (result: ResultInterFace) => ({
     type: 'SET_RESULT',
     result
+})
+
+export const setIsSwitchEnabled = (isSwitchEnabled: boolean) => ({
+    type: 'SET_SWITCH',
+    isSwitchEnabled
+})
+
+export const setCarousel = (carousel: any) => ({
+    type: 'SET_CAROUSEL',
+    carousel
 })
