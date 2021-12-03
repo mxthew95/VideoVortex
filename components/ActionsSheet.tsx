@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react'
+import React, { FC, useEffect, useRef } from 'react'
 import {
   StyleSheet,
   View,
@@ -12,7 +12,7 @@ import {
 import Result from './Result';
 import BottomSheet from 'react-native-simple-bottom-sheet';
 import { connect } from 'react-redux';
-import { ActionsSheetProp, LogInterface, ResultInterFace } from '../src/types';
+import { ActionsSheetProp, LogInterface, ModeInterface, ResultInterFace } from '../src/types';
 import { ButtonGroup } from 'react-native-elements';
 import { _DEFAULT_ITEMS, ID } from '../src/default';
 import Carousel from 'react-native-snap-carousel';
@@ -23,14 +23,25 @@ const ActionsSheet: FC<ActionsSheetProp> = ({
   modeSettings,
   logs,
   selectedLogs,
+  carousel,
+  isSwitchEnabled,
   setResult,
   setModeSettings,
-  setLogs
+  setLogs,
+  setCarousel,
+  setIsSwitchEnabled
 }) => {
-  const [isSwitchEnabled, setIsSwitchEnabled] = useState(false);
-  const [carousel, setCarousel] = useState(null)
 
-  const handleModeChange = (value) => {
+  const _carousel = useRef(null);
+
+  useEffect(()=>{
+
+    if(_carousel){
+      setCarousel(_carousel.current)
+    }
+  }, [carousel]);
+
+  const handleModeChange = (value): void => {
     const mode = value == 1 ? false : true;
     const items = !mode ? _DEFAULT_ITEMS.filter(el => el < 1 ? Math.abs(el) <= result.money : true) : _DEFAULT_ITEMS;
     const index = !mode ? result.money : 20;
@@ -59,8 +70,8 @@ const ActionsSheet: FC<ActionsSheetProp> = ({
     const obj = {
       validItems: items,
     }
-
-    setIsSwitchEnabled(prevState => !prevState);
+  
+    setIsSwitchEnabled(value);
 
     setModeSettings({
       ...modeSettings,
@@ -84,7 +95,7 @@ const ActionsSheet: FC<ActionsSheetProp> = ({
     );
   };
 
-  const handleAdd = () => {
+  const handleAdd = (): void => {
     if (selectedLogs.length > 0) {
       showErrMessage();
       return;
@@ -158,72 +169,70 @@ const ActionsSheet: FC<ActionsSheetProp> = ({
   }
 
   return (
-    <View>
-      <BottomSheet
-        isOpen={false}
-        animationDuration={150}
-        sliderMinHeight={150}
-        sliderMaxHeight={screen.height}
-      >
-        <Result fwd={result.fwd} rew={result.rew} money={result.money} />
+    <BottomSheet
+      isOpen={false}
+      animationDuration={150}
+      sliderMinHeight={150}
+      sliderMaxHeight={screen.height}
+    >
+      <Result fwd={result.fwd} rew={result.rew} money={result.money} />
 
-        <View style={styles.divider}></View>
+      <View style={styles.divider}></View>
 
-        <View style={styles.modeButtonGroupContainer}>
-          <ButtonGroup
-            buttons={['RUNTIME', 'MONEY']}
-            disabledSelectedStyle={styles.modeButtonDisabled}
-            disabledSelectedTextStyle={styles.modeButtonTextDisabled}
-            selectedIndex={modeSettings.selectedModeIndex}
-            textStyle={styles.modeButtonText}
-            onPress={handleModeChange}
-            containerStyle={styles.modeButtonContainer}
-            disabled={modeSettings.defaultMode ? [0] : [1]}
-          />
-        </View>
+      <View style={styles.modeButtonGroupContainer}>
+        <ButtonGroup
+          buttons={['RUNTIME', 'MONEY']}
+          disabledSelectedStyle={styles.modeButtonDisabled}
+          disabledSelectedTextStyle={styles.modeButtonTextDisabled}
+          selectedIndex={modeSettings.selectedModeIndex}
+          textStyle={styles.modeButtonText}
+          onPress={handleModeChange}
+          containerStyle={styles.modeButtonContainer}
+          disabled={modeSettings.defaultMode ? [0] : [1]}
+        />
+      </View>
 
-        <View style={styles.switchContainer}>
-          <Switch
-            disabled={!modeSettings.defaultMode}
-            trackColor={{ false: "#767577", true: "#0020f0" }}
-            thumbColor={isSwitchEnabled ? "#ffffff" : "#f4f3f4"}
-            onValueChange={toggleSwitch}
-            value={isSwitchEnabled}
-          />
-          <Text style={{ fontWeight: 'bold', fontFamily: 'monospace' }}>Timeshift</Text>
-        </View>
+      <View style={styles.switchContainer}>
+        <Switch
+          disabled={!modeSettings.defaultMode}
+          trackColor={{ false: "#767577", true: "#0020f0" }}
+          thumbColor={isSwitchEnabled ? "#ffffff" : "#f4f3f4"}
+          onValueChange={(value: boolean)=>toggleSwitch(value)}
+          value={isSwitchEnabled}
+        />
+        <Text style={styles.switchText}>Timeshift</Text>
+      </View>
 
-        <View style={styles.sliderContainer}>
-          <View style={styles.sliderPointer}></View>
-          <Carousel
-            layout={"default"}
-            data={modeSettings.validItems}
-            sliderWidth={250}
-            itemWidth={50}
-            inactiveSlideOpacity={0.5}
-            firstItem={20}
-            renderItem={renderSliderItem}
-            activeSlideOffset={5}
-            enableMomentum={true}
-            useScrollView={true}
-            onSnapToItem={handleCarouselIndexChange}
-            ref={(c) => { setCarousel(c) }}
-          />
-        </View>
+      <View style={styles.sliderContainer}>
+        <View style={styles.sliderPointer}></View>
+        <Carousel
+          layout={"default"}
+          data={modeSettings.validItems}
+          sliderWidth={250}
+          itemWidth={50}
+          inactiveSlideOpacity={0.5}
+          firstItem={20}
+          renderItem={renderSliderItem}
+          activeSlideOffset={5}
+          enableMomentum={true}
+          useScrollView={true}
+          onSnapToItem={handleCarouselIndexChange}
+          ref={_carousel}
+        />
+      </View>
 
-        <View style={styles.actionsSheetButtonContainer}>
-          <TouchableOpacity
-            onPress={handleAdd}
-            disabled={modeSettings.validItems[modeSettings.carouselIndex] === 0}
-          >
-            <View style={styles.actionButton}>
-              <Image style={styles.addButtonIcon} source={require('../add.png')} />
-              <Text style={styles.addButtonText}>Add</Text>
-            </View>
-          </TouchableOpacity>
-        </View>
-      </BottomSheet >
-    </View>
+      <View style={styles.actionsSheetButtonContainer}>
+        <TouchableOpacity
+          onPress={handleAdd}
+          disabled={modeSettings.validItems[modeSettings.carouselIndex] === 0}
+        >
+          <View style={styles.actionButton}>
+            <Image style={styles.addButtonIcon} source={require('../add.png')} />
+            <Text style={styles.addButtonText}>Add</Text>
+          </View>
+        </TouchableOpacity>
+      </View>
+    </BottomSheet >
   );
 };
 
@@ -292,7 +301,8 @@ const styles = StyleSheet.create({
     padding: 5
   },
   addButtonIcon: { width: 50, height: 50 },
-  addButtonText: { color:'black', fontWeight: 'bold' }
+  addButtonText: { color: 'black', fontWeight: 'bold' },
+  switchText: { color: 'black', fontWeight: 'bold', fontFamily: 'monospace' }
 })
 
 const mapStateToProps = state => {
@@ -300,15 +310,19 @@ const mapStateToProps = state => {
     result: state.result,
     modeSettings: state.modeSettings,
     logs: state.logs,
-    selectedLogs: state.selectedLogs
+    selectedLogs: state.selectedLogs,
+    carousel: state.carousel,
+    isSwitchEnabled: state.isSwitchEnabled
   }
 }
 
 const mapDispatchToProps = dispatch => {
   return {
-    setResult: (result) => dispatch({ type: 'SET_RESULT', result }),
-    setModeSettings: (modeSettings) => dispatch({ type: 'SET_MODE_SETTINGS', modeSettings }),
-    setLogs: (logs) => dispatch({ type: 'SET_LOGS', logs }),
+    setResult: (result: ResultInterFace): void => dispatch({ type: 'SET_RESULT', result }),
+    setModeSettings: (modeSettings: ModeInterface): void => dispatch({ type: 'SET_MODE_SETTINGS', modeSettings }),
+    setLogs: (logs: LogInterface[]): void => dispatch({ type: 'SET_LOGS', logs }),
+    setCarousel: (carousel: any): void => dispatch({ type: 'SET_CAROUSEL', carousel }),
+    setIsSwitchEnabled: (isSwitchEnabled: boolean): void => dispatch({ type: 'SET_SWITCH', isSwitchEnabled }),
   }
 }
 
